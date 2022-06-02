@@ -1,0 +1,40 @@
+{% extends 'head.html' %}
+
+{% load static %}
+{% block content %}
+{% if posts %}
+    {% for post in posts %}
+        <div class="content">
+            <div class="header">
+                <div class="avatar">
+                    <img src="{{post.post_author.avatar.url}}" alt="">
+                </div>
+                <div class="header-content">
+                    <h4>Автор: {{ post.post_author }}</h4>
+                    <h3>Заголовок: {{ post.post_header }}</h3>
+                </div>
+            </div>
+            <div class="img-content">
+                {{ post.post_content|safe }}
+            </div>
+            <div class="reply">
+                <div class="link">
+                    <a class="btn btn-primary my-2" href="{% url 'post_detail' post.pk %}">Подробнее</a>
+                </div>
+                {% if request.user.username %}
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <div class="like">
+                        <a class="btn btn-primary my-2" href="{% url 'post_like' post.pk %}">Лайк</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock content %}
